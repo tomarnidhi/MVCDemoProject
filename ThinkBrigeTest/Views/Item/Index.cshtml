@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Item List</h2>
+<style type="text/css">
+    .error {
+        display: none;
+        margin-left: 10px;
+    }
+
+    .error_show {
+        color: red;
+        margin-left: 10px;
+    }
+</style>
+<div class="modal-body">
+    <div class="row">
+        <input type="button" id="btnadd" value="Add" class="btn btn-primary button button4 pull-right" />
+    </div>
+</div>
+<div class="modal-body">
+    <table id="itemTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                @*<th>Description</th>*@
+                <th>Price</th>
+                @*<th>ID</th>*@
+                <th>Action</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+</div>
+<div class="modal fade" tabindex="-1" id="loginModal"
+     role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 id="txttitle" class="modal-title">Add Item</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="hdnId" value="" />
+                    <div class="form-group">
+                        <input class="form-control" type="text"
+                               placeholder="Name" id="txtName" maxlength="50" />
+                        <span class="error" id="Nameerror">Please Enter Name</span>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Price"
+                               type="text" id="txtprice" maxlength="10" />
+                        <span class="error" id="Priceerror">Please Enter Price</span>
+                        <span class="error" id="PriceNoerror">Please Enter Valid Price</span>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Description"
+                                  type="text" id="txtDesc" maxlength="1000"></textarea>
+                        <span class="error" id="Descerror">Please Enter Description</span>
+
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="submit" id="btnsave" class="btn btn-primary button button4">Save</button>
+                    <button type="submit" id="btncancel" class="btn btn-danger button button4">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+}

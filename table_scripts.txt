@@ -1,0 +1,112 @@
+USE [master]
+GO
+/****** Object:  Database [MVCDemo]    Script Date: 9/21/2020 6:16:14 PM ******/
+CREATE DATABASE [MVCDemo]
+GO
+USE [MVCDemo]
+GO
+/****** Object:  Table [dbo].[Item]    Script Date: 9/21/2020 6:16:14 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Item](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[Price] [decimal](18, 2) NULL,
+	[Image] [nvarchar](50) NULL,
+	[CreatedDtm] [datetime] NULL,
+	[UpdatedDtm] [datetime] NULL,
+	[IsDeleted] [bit] NULL,
+ CONSTRAINT [PK_Item] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_DeleteItem]    Script Date: 9/21/2020 6:16:14 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_DeleteItem]
+(  
+@Id UNIQUEIDENTIFIER 
+)
+AS
+BEGIN
+ UPDATE [dbo].[Item]
+ SET
+ [IsDeleted]=1,
+ [UpdatedDtm] =GETDATE()
+ WHERE
+ [Id]=@Id
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_GetAllItem]    Script Date: 9/21/2020 6:16:14 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_GetAllItem]
+AS
+BEGIN
+    SELECT convert(nvarchar(max),Id) Id, Name, [Description], convert(nvarchar(max), Price) Price
+    FROM [dbo].[Item]
+	WHERE [IsDeleted]=0
+	ORDER BY [CreatedDtm],[UpdatedDtm] DESC
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_InsertItem]    Script Date: 9/21/2020 6:16:14 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_InsertItem]
+(  
+@Name  NVARCHAR(50),  
+@Desc NVARCHAR(MAX),  
+@Price DECIMAL(18,2)  
+)
+AS
+BEGIN
+  DECLARE @Id AS UNIQUEIDENTIFIER;
+  SET @Id=NEWID()
+  INSERT INTO dbo.[Item] 
+  (Id, Name, [Description], Price, CreatedDtm, IsDeleted)
+  VALUES
+  (@Id,@Name,@Desc,@Price,GETDATE(),0)
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_UpdateItem]    Script Date: 9/21/2020 6:16:14 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_UpdateItem]
+(  
+@Name  NVARCHAR(50),  
+@Desc NVARCHAR(MAX),  
+@Price DECIMAL(18,2),
+@Id UNIQUEIDENTIFIER 
+)
+AS
+BEGIN
+ UPDATE [dbo].[Item]
+ SET
+ [Name]=@Name,
+ [Description] = @Desc, 
+ [Price] = @Price , 
+ [UpdatedDtm] =GETDATE()
+ WHERE
+ [Id]=@Id
+
+END
+
+
